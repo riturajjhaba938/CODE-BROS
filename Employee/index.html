@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ExpenseFlow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-receipt"></i>
+                    <span>ExpenseFlow</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active" data-tab="dashboard">Dashboard</a></li>
+                        <li><a href="#" data-tab="approvals">Pending Approvals</a></li>
+                        <li><a href="#" data-tab="all-expenses">All Expenses</a></li>
+                        <li><a href="#" data-tab="settings">Settings</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <div class="user-info">
+                        <span>John Doe (Admin)</span>
+                    </div>
+                    <button class="btn btn-outline" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <h1 class="section-title">Admin Dashboard</h1>
+                
+                <div class="dashboard">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Pending Approval</h3>
+                            <div class="card-icon bg-warning">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="adminPendingCount">8</div>
+                        <p class="card-text">Expenses waiting for approval</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Total Submitted</h3>
+                            <div class="card-icon bg-primary">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">$4,250.75</div>
+                        <p class="card-text">All expense claims this month</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Approved</h3>
+                            <div class="card-icon bg-success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">$3,120.50</div>
+                        <p class="card-text">Approved expenses this month</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Rejected</h3>
+                            <div class="card-icon bg-danger">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">$230.25</div>
+                        <p class="card-text">Rejected expenses this month</p>
+                    </div>
+                </div>
+                
+                <div class="section-title">Recent Expenses</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboardTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Pending Approvals Tab -->
+            <div id="approvals" class="tab-content">
+                <h1 class="section-title">Pending Approvals</h1>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Current Approver</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvalsTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- All Expenses Tab -->
+            <div id="all-expenses" class="tab-content">
+                <h1 class="section-title">All Expenses</h1>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Approver</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allExpensesTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <h1 class="section-title">Approval Settings</h1>
+                
+                <div class="tabs">
+                    <div class="tab active" data-settings-tab="workflow">Approval Workflow</div>
+                    <div class="tab" data-settings-tab="rules">Approval Rules</div>
+                    <div class="tab" data-settings-tab="company">Company Settings</div>
+                </div>
+                
+                <div id="workflow" class="settings-tab-content active">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Multi-level Approval Flow</h3>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add Step
+                            </button>
+                        </div>
+                        <div class="workflow-steps">
+                            <div class="workflow-step">
+                                <div class="step-number">1</div>
+                                <div class="step-details">
+                                    <h4>Manager Approval</h4>
+                                    <p>Expense first goes to employee's direct manager</p>
+                                </div>
+                                <div class="step-actions">
+                                    <button class="action-btn btn-outline">Edit</button>
+                                    <button class="action-btn btn-danger">Remove</button>
+                                </div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-number">2</div>
+                                <div class="step-details">
+                                    <h4>Finance Approval</h4>
+                                    <p>For expenses over $500</p>
+                                </div>
+                                <div class="step-actions">
+                                    <button class="action-btn btn-outline">Edit</button>
+                                    <button class="action-btn btn-danger">Remove</button>
+                                </div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-number">3</div>
+                                <div class="step-details">
+                                    <h4>Director Approval</h4>
+                                    <p>For expenses over $1000</p>
+                                </div>
+                                <div class="step-actions">
+                                    <button class="action-btn btn-outline">Edit</button>
+                                    <button class="action-btn btn-danger">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="rules" class="settings-tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Conditional Approval Rules</h3>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add Rule
+                            </button>
+                        </div>
+                        <div class="rules-list">
+                            <div class="rule-item">
+                                <div class="rule-details">
+                                    <h4>Percentage Rule</h4>
+                                    <p>If 60% of approvers approve → Expense approved</p>
+                                </div>
+                                <div class="rule-actions">
+                                    <button class="action-btn btn-outline">Edit</button>
+                                    <button class="action-btn btn-danger">Remove</button>
+                                </div>
+                            </div>
+                            <div class="rule-item">
+                                <div class="rule-details">
+                                    <h4>Specific Approver Rule</h4>
+                                    <p>If CFO approves → Expense auto-approved</p>
+                                </div>
+                                <div class="rule-actions">
+                                    <button class="action-btn btn-outline">Edit</button>
+                                    <button class="action-btn btn-danger">Remove</button>
+                                </div>
+                            </div>
+                            <div class="rule-item">
+                                <div class="rule-details">
+                                    <h4>Hybrid Rule</h4>
+                                    <p>60% OR CFO approves → Expense approved</p>
+                                </div>
+                                <div class="rule-actions">
+                                    <button class="action-btn btn-outline">Edit</button>
+                                    <button class="action-btn btn-danger">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="company" class="settings-tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Company Settings</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="companyName">Company Name</label>
+                                <input type="text" id="companyName" class="form-control" value="Tech Solutions Inc.">
+                            </div>
+                            <div class="form-group">
+                                <label for="companyCurrency">Default Currency</label>
+                                <select id="companyCurrency" class="form-control">
+                                    <option value="USD" selected>US Dollar (USD)</option>
+                                    <option value="EUR">Euro (EUR)</option>
+                                    <option value="GBP">British Pound (GBP)</option>
+                                    <option value="JPY">Japanese Yen (JPY)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="companyCountry">Country</label>
+                                <select id="companyCountry" class="form-control">
+                                    <option value="US" selected>United States</option>
+                                    <option value="GB">United Kingdom</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="FR">France</option>
+                                    <option value="JP">Japan</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary">Save Company Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Expense Detail Modal -->
+    <div id="expenseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Expense Details</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Employee</label>
+                    <p id="modalEmployee">Michael Chen</p>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <p id="modalDate">2023-06-15</p>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <p id="modalCategory">Travel</p>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <p id="modalDescription">Flight to client meeting in New York</p>
+                </div>
+                <div class="form-group">
+                    <label>Amount</label>
+                    <p id="modalAmount">$450.00</p>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <p id="modalStatus"><span class="status status-pending">Pending</span></p>
+                </div>
+                <div class="form-group">
+                    <label>Current Approver</label>
+                    <p id="modalApprover">Sarah Johnson (Manager)</p>
+                </div>
+                <div class="form-group">
+                    <label>Receipt</label>
+                    <div class="receipt-preview">
+                        <img id="modalReceipt" src="https://via.placeholder.com/300x150?text=Flight+Receipt" alt="Receipt">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <!-- Buttons will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 ExpenseFlow - Admin Dashboard. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="./index.js"></script>
+
+</body>
+</html>

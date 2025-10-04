@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard - ExpenseFlow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-receipt"></i>
+                    <span>ExpenseFlow</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active" data-tab="dashboard">Dashboard</a></li>
+                        <li><a href="#" data-tab="expenses">My Expenses</a></li>
+                        <li><a href="#" data-tab="submit-expense">Submit Expense</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <div class="user-info">
+                        <span id="userName">Michael Chen (Employee)</span>
+                    </div>
+                    <button class="btn btn-outline" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <h1 class="section-title">Employee Dashboard</h1>
+                
+                <div class="dashboard">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Pending Approval</h3>
+                            <div class="card-icon bg-warning">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="pendingCount">5</div>
+                        <p class="card-text">Your expenses waiting for approval</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Total Submitted</h3>
+                            <div class="card-icon bg-primary">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">$1,250.75</div>
+                        <p class="card-text">Your expense claims this month</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Approved</h3>
+                            <div class="card-icon bg-success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">$980.50</div>
+                        <p class="card-text">Approved expenses this month</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Reimbursed</h3>
+                            <div class="card-icon bg-success">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">$750.00</div>
+                        <p class="card-text">Amount reimbursed to you</p>
+                    </div>
+                </div>
+                
+                <div class="section-title">Recent Expenses</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboardTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- My Expenses Tab -->
+            <div id="expenses" class="tab-content">
+                <div class="section-header">
+                    <h1 class="section-title">My Expenses</h1>
+                    <button class="btn btn-primary" id="addExpenseBtn">
+                        <i class="fas fa-plus"></i> Add New Expense
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Approver</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expensesTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Submit Expense Tab -->
+            <div id="submit-expense" class="tab-content">
+                <h1 class="section-title">Submit New Expense</h1>
+                
+                <div class="form-container">
+                    <div class="form-group">
+                        <label for="expenseDate">Date</label>
+                        <input type="date" id="expenseDate" class="form-control" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseCategory">Category</label>
+                        <select id="expenseCategory" class="form-control">
+                            <option value="">Select a category</option>
+                            <option value="travel">Travel</option>
+                            <option value="meals">Meals</option>
+                            <option value="equipment">Equipment</option>
+                            <option value="software">Software</option>
+                            <option value="training">Training</option>
+                            <option value="office-supplies">Office Supplies</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDescription">Description</label>
+                        <textarea id="expenseDescription" class="form-control" rows="3" placeholder="Enter expense description"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expenseAmount">Amount</label>
+                            <input type="number" id="expenseAmount" class="form-control" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="expenseCurrency">Currency</label>
+                            <select id="expenseCurrency" class="form-control">
+                                <option value="USD" selected>USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                                <option value="JPY">JPY</option>
+                                <option value="CAD">CAD</option>
+                                <option value="AUD">AUD</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseReceipt">Receipt</label>
+                        <div class="receipt-upload">
+                            <input type="file" id="expenseReceipt" class="form-control" accept="image/*">
+                            <small>Upload a receipt image for OCR processing (JPEG, PNG, PDF)</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="scanReceiptBtn">
+                            <i class="fas fa-camera"></i> Scan Receipt with OCR
+                        </button>
+                    </div>
+                    
+                    <div class="ocr-processing" id="ocrProcessing">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <h3>Processing Receipt</h3>
+                        <p>Extracting information from your receipt...</p>
+                    </div>
+                    
+                    <div class="receipt-preview" id="receiptPreview">
+                        <h3>Receipt Preview</h3>
+                        <img id="receiptImage" src="" alt="Receipt">
+                        <div class="receipt-info">
+                            <p><strong>Merchant:</strong> <span id="receiptMerchant">The Grand Restaurant</span></p>
+                            <p><strong>Date:</strong> <span id="receiptDate">2023-06-15</span></p>
+                            <p><strong>Amount:</strong> <span id="receiptAmount">$85.50</span></p>
+                            <p><strong>Category:</strong> <span id="receiptCategory">Meals</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="submitExpenseBtn" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i> Submit Expense
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Expense Detail Modal -->
+    <div id="expenseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Expense Details</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Date</label>
+                    <p id="modalDate">2023-06-15</p>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <p id="modalCategory">Travel</p>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <p id="modalDescription">Flight to client meeting in New York</p>
+                </div>
+                <div class="form-group">
+                    <label>Amount</label>
+                    <p id="modalAmount">$450.00</p>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <p id="modalStatus"><span class="status status-pending">Pending</span></p>
+                </div>
+                <div class="form-group">
+                    <label>Current Approver</label>
+                    <p id="modalApprover">Sarah Johnson (Manager)</p>
+                </div>
+                <div class="form-group">
+                    <label>Receipt</label>
+                    <div class="receipt-preview">
+                        <img id="modalReceipt" src="https://via.placeholder.com/300x150?text=Flight+Receipt" alt="Receipt">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline close-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 ExpenseFlow - Employee Expense Management. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="./index.js"></script>
+</body>
+</html>
