@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpenseFlow | Corporate Cards & Expense Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --gray: #95a5a6;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 0;
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 15px;
+        }
+
+        .nav-links li {
+            margin-bottom: 5px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-links a.active {
+            background-color: var(--secondary);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 250px;
+            transition: var(--transition);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .card-icon.blue {
+            background-color: var(--secondary);
+        }
+
+        .card-icon.green {
+            background-color: var(--success);
+        }
+
+        .card-icon.orange {
+            background-color: var(--warning);
+        }
+
+        .card-icon.red {
+            background-color: var(--danger);
+        }
+
+        .card-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .card-change {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-change.positive {
+            color: var(--success);
+        }
+
+        .card-change.negative {
+            color: var(--danger);
+        }
+
+        /* Corporate Cards Section */
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .corporate-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .corporate-card {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            color: white;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .corporate-card.premium {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+        }
+
+        .corporate-card.gold {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .card-chip {
+            width: 50px;
+            height: 35px;
+            background: linear-gradient(135deg, #c9c9c9, #e0e0e0);
+            border-radius: 5px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .card-chip::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+        }
+
+        .card-number {
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-holder, .card-expiry {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .card-info {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .card-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Refresh Options */
+        .refresh-options {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+        }
+
+        .refresh-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .refresh-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .refresh-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .last-refresh {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .refresh-options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .refresh-option {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .refresh-option:hover {
+            border-color: var(--secondary);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .refresh-option.active {
+            border-color: var(--secondary);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .refresh-option-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .refresh-option-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .refresh-option-description {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background-color: var(--success);
+            color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background-color: var(--danger);
+        }
+
+        .toast.warning {
+            background-color: var(--warning);
+        }
+
+        /* Auth Section Styles */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .auth-right {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-form-container h2 {
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .checkbox input {
+            margin-right: 8px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-login:hover {
+            background-color: #2980b9;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+        }
+
+        .auth-switch span {
+            color: var(--secondary);
+            cursor: pointer;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .admin-badge {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .employee-badge {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .manager-badge {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--gray);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+        }
+
+        .stat-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+
+        .card-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1200px) {
+            .dashboard-cards, .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .corporate-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .refresh-options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-cards, .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header, .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .user-info {
+                align-self: flex-end;
+            }
+            
+            .refresh-header, .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .refresh-actions, .filters {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Section -->
+    <div id="auth-section" class="section active">
+        <div class="auth-container">
+            <div class="auth-right">
+                <div class="auth-form-container">
+                    <h2>Welcome to ExpenseFlow</h2>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select id="country">
+                            <option value="">Select your country</option>
+                            <option value="US">United States (USD)</option>
+                            <option value="UK">United Kingdom (GBP)</option>
+                            <option value="EU">European Union (EUR)</option>
+                            <option value="IN">India (INR)</option>
+                            <option value="CA">Canada (CAD)</option>
+                            <option value="AU">Australia (AUD)</option>
+                            <option value="JP">Japan (JPY)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox" id="remember-me">
+                            <span class="checkmark"></span>
+                            Remember Me
+                        </label>
+                    </div>
+                    
+                    <button class="btn-login" onclick="handleSignup()">
+                        Log In / Sign Up
+                    </button>
+                    
+                    <p class="auth-switch">
+                        First time here? <span>You're automatically signed up!</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="section">
+        <div class="container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="logo">
+                    <h1><i class="fas fa-receipt"></i> ExpenseFlow</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="active"><i class="fas fa-credit-card"></i> Corporate Cards</a></li>
+                    <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Dashboard</a></li>
+                </ul>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="header">
+                    <h2>Corporate Cards</h2>
+                    <div class="user-info">
+                        <div class="user-avatar">AD</div>
+                        <div>
+                            <div><a href="./corpurateCard.html"></a>Dashboard</div>
+                            <div style="font-size: 0.8rem; color: var(--gray);">Administrator</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refresh Options Section -->
+                <div class="refresh-options">
+                    <div class="refresh-header">
+                        <h3 class="section-title"><i class="fas fa-sync-alt"></i> Refresh Card Data</h3>
+                        <div class="refresh-status">
+                            <div class="last-refresh">
+                                <i class="far fa-clock"></i>
+                                <span id="lastRefreshTime">Last refreshed: Never</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="refresh-options-grid">
+                        <div class="refresh-option" id="refreshBalances">
+                            <div class="refresh-option-header">
+                                <i class="fas fa-dollar-sign"></i>
+                                <div class="refresh-option-title">Update Balances</div>
+                            </div>
+                            <div class="refresh-option-description">
+                                Sync the latest card balances and available credit from the bank.
+                            </div>
+                        </div>
+                        <div class="refresh-option" id="refreshTransactions">
+                            <div class="refresh-option-header">
+                                <i class="fas fa-exchange-alt"></i>
+                                <div class="refresh-option-title">Update Transactions</div>
+                            </div>
+                            <div class="refresh-option-description">
+                                Fetch the latest transactions and pending charges from the bank.
+                            </div>
+                        </div>
+                        <div class="refresh-option" id="refreshAll">
+                            <div class="refresh-option-header">
+                                <i class="fas fa-redo-alt"></i>
+                                <div class="refresh-option-title">Full Refresh</div>
+                            </div>
+                            <div class="refresh-option-description">
+                                Complete sync of all card data including balances, transactions, and limits.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="refresh-actions" style="margin-top: 20px;">
+                        <button class="btn btn-primary" id="executeRefresh">
+                            <i class="fas fa-sync"></i> Refresh Now
+                        </button>
+                        <button class="btn btn-outline" id="scheduleRefresh">
+                            <i class="far fa-clock"></i> Schedule Refresh
+                        </button>
+                        <button class="btn btn-outline" id="refreshSettings">
+                            <i class="fas fa-cog"></i> Refresh Settings
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dashboard Cards -->
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Total Cards</div>
+                            <div class="card-icon blue">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="totalCards">12</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> 2 from last month
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Monthly Spending</div>
+                            <div class="card-icon green">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="monthlySpending">$8,450</div>
+                        <div class="card-change negative">
+                            <i class="fas fa-arrow-down"></i> 5% from last month
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Pending Approvals</div>
+                            <div class="card-icon orange">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="pendingApprovals">7</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> 3 from yesterday
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Policy Violations</div>
+                            <div class="card-icon red">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="policyViolations">2</div>
+                        <div class="card-change negative">
+                            <i class="fas fa-arrow-down"></i> 1 from last week
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Corporate Cards -->
+                <h3 class="section-title"><i class="fas fa-credit-card"></i> Your Corporate Cards</h3>
+                <div class="corporate-cards" id="corporateCardsContainer">
+                    <!-- Cards will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee Dashboard -->
+    <div id="employee-dashboard" class="section">
+        <div class="container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="logo">
+                    <h1><i class="fas fa-receipt"></i> ExpenseFlow</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="active"><i class="fas fa-credit-card"></i> Corporate Cards</a></li>
+                    <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> My Expenses</a></li>
+                    <li><a href="#"><i class="fas fa-history"></i> Expense History</a></li>
+                    <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="header">
+                    <h2>Corporate Cards</h2>
+                    <div class="user-info">
+                        <div class="user-avatar">EU</div>
+                        <div>
+                            <div>Employee User</div>
+                            <div style="font-size: 0.8rem; color: var(--gray);">Employee</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refresh Options Section -->
+                <div class="refresh-options">
+                    <div class="refresh-header">
+                        <h3 class="section-title"><i class="fas fa-sync-alt"></i> Refresh Card Data</h3>
+                        <div class="refresh-status">
+                            <div class="last-refresh">
+                                <i class="far fa-clock"></i>
+                                <span id="lastRefreshTimeEmp">Last refreshed: Never</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="refresh-options-grid">
+                        <div class="refresh-option" id="refreshBalancesEmp">
+                            <div class="refresh-option-header">
+                                <i class="fas fa-dollar-sign"></i>
+                                <div class="refresh-option-title">Update Balances</div>
+                            </div>
+                            <div class="refresh-option-description">
+                                Sync the latest card balances and available credit from the bank.
+                            </div>
+                        </div>
+                        <div class="refresh-option" id="refreshTransactionsEmp">
+                            <div class="refresh-option-header">
+                                <i class="fas fa-exchange-alt"></i>
+                                <div class="refresh-option-title">Update Transactions</div>
+                            </div>
+                            <div class="refresh-option-description">
+                                Fetch the latest transactions and pending charges from the bank.
+                            </div>
+                        </div>
+                        <div class="refresh-option" id="refreshAllEmp">
+                            <div class="refresh-option-header">
+                                <i class="fas fa-redo-alt"></i>
+                                <div class="refresh-option-title">Full Refresh</div>
+                            </div>
+                            <div class="refresh-option-description">
+                                Complete sync of all card data including balances, transactions, and limits.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="refresh-actions" style="margin-top: 20px;">
+                        <button class="btn btn-primary" id="executeRefreshEmp">
+                            <i class="fas fa-sync"></i> Refresh Now
+                        </button>
+                        <button class="btn btn-outline" id="scheduleRefreshEmp">
+                            <i class="far fa-clock"></i> Schedule Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dashboard Cards -->
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">My Cards</div>
+                            <div class="card-icon blue">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="myCards">2</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> 1 from last month
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Monthly Spending</div>
+                            <div class="card-icon green">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="myMonthlySpending">$1,250</div>
+                        <div class="card-change negative">
+                            <i class="fas fa-arrow-down"></i> 15% from last month
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Pending Expenses</div>
+                            <div class="card-icon orange">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="myPendingExpenses">3</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> 1 from yesterday
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Available Balance</div>
+                            <div class="card-icon red">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="myAvailableBalance">$3,750</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> $250 from last week
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Corporate Cards -->
+                <h3 class="section-title"><i class="fas fa-credit-card"></i> My Corporate Cards</h3>
+                <div class="corporate-cards" id="corporateCardsContainerEmp">
+                    <!-- Cards will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Sample data for the application
+        let corporateCards = [
+            {
+                id: 1,
+                type: 'standard',
+                number: '4512',
+                holder: 'JOHN DOE',
+                expiry: '08/25',
+                balance: 2450,
+                limit: 5000,
+                available: 2550,
+                lastUpdated: '2023-10-15T10:30:00Z'
+            },
+            {
+                id: 2,
+                type: 'premium',
+                number: '7821',
+                holder: 'JOHN DOE',
+                expiry: '11/26',
+                balance: 5200,
+                limit: 10000,
+                available: 4800,
+                lastUpdated: '2023-10-14T14:45:00Z'
+            }
+        ];
+
+        let employeeCards = [
+            {
+                id: 1,
+                type: 'standard',
+                number: '1234',
+                holder: 'EMPLOYEE USER',
+                expiry: '05/25',
+                balance: 1250,
+                limit: 5000,
+                available: 3750,
+                lastUpdated: '2023-10-15T10:30:00Z'
+            }
+        ];
+
+        // Refresh state management
+        let refreshState = {
+            selectedOption: 'refreshAll',
+            isRefreshing: false,
+            lastRefreshTime: null
+        };
+
+        // DOM Elements
+        const corporateCardsContainer = document.getElementById('corporateCardsContainer');
+        const corporateCardsContainerEmp = document.getElementById('corporateCardsContainerEmp');
+        const executeRefreshBtn = document.getElementById('executeRefresh');
+        const scheduleRefreshBtn = document.getElementById('scheduleRefresh');
+        const refreshSettingsBtn = document.getElementById('refreshSettings');
+        const refreshBalancesOption = document.getElementById('refreshBalances');
+        const refreshTransactionsOption = document.getElementById('refreshTransactions');
+        const refreshAllOption = document.getElementById('refreshAll');
+        const lastRefreshTimeElement = document.getElementById('lastRefreshTime');
+        const toast = document.getElementById('toast');
+
+        // Employee DOM Elements
+        const executeRefreshBtnEmp = document.getElementById('executeRefreshEmp');
+        const scheduleRefreshBtnEmp = document.getElementById('scheduleRefreshEmp');
+        const refreshBalancesOptionEmp = document.getElementById('refreshBalancesEmp');
+        const refreshTransactionsOptionEmp = document.getElementById('refreshTransactionsEmp');
+        const refreshAllOptionEmp = document.getElementById('refreshAllEmp');
+        const lastRefreshTimeElementEmp = document.getElementById('lastRefreshTimeEmp');
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCorporateCards();
+            renderEmployeeCards();
+            updateLastRefreshTime();
+            setupEventListeners();
+        });
+
+        // Render corporate cards for admin
+        function renderCorporateCards() {
+            corporateCardsContainer.innerHTML = '';
+            
+            corporateCards.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = `corporate-card ${card.type}`;
+                
+                const lastUpdated = new Date(card.lastUpdated).toLocaleString();
+                
+                cardElement.innerHTML = `
+                    <div class="card-logo">VISA</div>
+                    <div class="card-chip"></div>
+                    <div class="card-number">**** **** **** ${card.number}</div>
+                    <div class="card-details">
+                        <div class="card-holder">
+                            <div class="card-label">CARD HOLDER</div>
+                            <div class="card-info">${card.holder}</div>
+                        </div>
+                        <div class="card-expiry">
+                            <div class="card-label">EXPIRES</div>
+                            <div class="card-info">${card.expiry}</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 0.9rem;">
+                        <div>Balance: $${card.balance.toLocaleString()}</div>
+                        <div>Available: $${card.available.toLocaleString()}</div>
+                        <div>Limit: $${card.limit.toLocaleString()}</div>
+                        <div style="font-size: 0.7rem; opacity: 0.7; margin-top: 5px;">Updated: ${lastUpdated}</div>
+                    </div>
+                `;
+                
+                corporateCardsContainer.appendChild(cardElement);
+            });
+        }
+
+        // Render corporate cards for employee
+        function renderEmployeeCards() {
+            corporateCardsContainerEmp.innerHTML = '';
+            
+            employeeCards.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = `corporate-card ${card.type}`;
+                
+                const lastUpdated = new Date(card.lastUpdated).toLocaleString();
+                
+                cardElement.innerHTML = `
+                    <div class="card-logo">VISA</div>
+                    <div class="card-chip"></div>
+                    <div class="card-number">**** **** **** ${card.number}</div>
+                    <div class="card-details">
+                        <div class="card-holder">
+                            <div class="card-label">CARD HOLDER</div>
+                            <div class="card-info">${card.holder}</div>
+                        </div>
+                        <div class="card-expiry">
+                            <div class="card-label">EXPIRES</div>
+                            <div class="card-info">${card.expiry}</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 0.9rem;">
+                        <div>Balance: $${card.balance.toLocaleString()}</div>
+                        <div>Available: $${card.available.toLocaleString()}</div>
+                        <div>Limit: $${card.limit.toLocaleString()}</div>
+                        <div style="font-size: 0.7rem; opacity: 0.7; margin-top: 5px;">Updated: ${lastUpdated}</div>
+                    </div>
+                `;
+                
+                corporateCardsContainerEmp.appendChild(cardElement);
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Refresh option selection for admin
+            refreshBalancesOption.addEventListener('click', function() {
+                selectRefreshOption('refreshBalances');
+            });
+
+            refreshTransactionsOption.addEventListener('click', function() {
+                selectRefreshOption('refreshTransactions');
+            });
+
+            refreshAllOption.addEventListener('click', function() {
+                selectRefreshOption('refreshAll');
+            });
+
+            // Execute refresh button for admin
+            executeRefreshBtn.addEventListener('click', function() {
+                executeRefresh();
+            });
+
+            // Schedule refresh button for admin
+            scheduleRefreshBtn.addEventListener('click', function() {
+                showToast('Refresh scheduling feature would open here', 'success');
+            });
+
+            // Refresh settings button for admin
+            refreshSettingsBtn.addEventListener('click', function() {
+                showToast('Refresh settings panel would open here', 'success');
+            });
+
+            // Refresh option selection for employee
+            refreshBalancesOptionEmp.addEventListener('click', function() {
+                selectRefreshOptionEmp('refreshBalances');
+            });
+
+            refreshTransactionsOptionEmp.addEventListener('click', function() {
+                selectRefreshOptionEmp('refreshTransactions');
+            });
+
+            refreshAllOptionEmp.addEventListener('click', function() {
+                selectRefreshOptionEmp('refreshAll');
+            });
+
+            // Execute refresh button for employee
+            executeRefreshBtnEmp.addEventListener('click', function() {
+                executeRefreshEmp();
+            });
+
+            // Schedule refresh button for employee
+            scheduleRefreshBtnEmp.addEventListener('click', function() {
+                showToast('Refresh scheduling feature would open here', 'success');
+            });
+        }
+
+        // Select refresh option for admin
+        function selectRefreshOption(option) {
+            // Remove active class from all options
+            refreshBalancesOption.classList.remove('active');
+            refreshTransactionsOption.classList.remove('active');
+            refreshAllOption.classList.remove('active');
+            
+            // Add active class to selected option
+            if (option === 'refreshBalances') {
+                refreshBalancesOption.classList.add('active');
+            } else if (option === 'refreshTransactions') {
+                refreshTransactionsOption.classList.add('active');
+            } else if (option === 'refreshAll') {
+                refreshAllOption.classList.add('active');
+            }
+            
+            refreshState.selectedOption = option;
+        }
+
+        // Select refresh option for employee
+        function selectRefreshOptionEmp(option) {
+            // Remove active class from all options
+            refreshBalancesOptionEmp.classList.remove('active');
+            refreshTransactionsOptionEmp.classList.remove('active');
+            refreshAllOptionEmp.classList.remove('active');
+            
+            // Add active class to selected option
+            if (option === 'refreshBalances') {
+                refreshBalancesOptionEmp.classList.add('active');
+            } else if (option === 'refreshTransactions') {
+                refreshTransactionsOptionEmp.classList.add('active');
+            } else if (option === 'refreshAll') {
+                refreshAllOptionEmp.classList.add('active');
+            }
+            
+            refreshState.selectedOption = option;
+        }
+
+        // Execute refresh for admin
+        function executeRefresh() {
+            if (refreshState.isRefreshing) {
+                showToast('Refresh already in progress', 'warning');
+                return;
+            }
+            
+            // Show loading state
+            refreshState.isRefreshing = true;
+            executeRefreshBtn.innerHTML = '<div class="spinner"></div> Refreshing...';
+            executeRefreshBtn.disabled = true;
+            
+            // Determine which refresh function to call
+            let refreshPromise;
+            if (refreshState.selectedOption === 'refreshBalances') {
+                refreshPromise = refreshBalances();
+            } else if (refreshState.selectedOption === 'refreshTransactions') {
+                refreshPromise = refreshTransactions();
+            } else {
+                refreshPromise = refreshAllData();
+            }
+            
+            // Execute the refresh
+            refreshPromise
+                .then(result => {
+                    // Update UI with new data
+                    updateDashboardData(result.dashboard);
+                    corporateCards = result.cards;
+                    renderCorporateCards();
+                    
+                    // Update last refresh time
+                    refreshState.lastRefreshTime = new Date();
+                    updateLastRefreshTime();
+                    
+                    // Show success message
+                    showToast(`Refresh completed successfully! ${result.message}`, 'success');
+                })
+                .catch(error => {
+                    // Show error message
+                    showToast(`Refresh failed: ${error.message}`, 'error');
+                })
+                .finally(() => {
+                    // Reset loading state
+                    refreshState.isRefreshing = false;
+                    executeRefreshBtn.innerHTML = '<i class="fas fa-sync"></i> Refresh Now';
+                    executeRefreshBtn.disabled = false;
+                });
+        }
+
+        // Execute refresh for employee
+        function executeRefreshEmp() {
+            if (refreshState.isRefreshing) {
+                showToast('Refresh already in progress', 'warning');
+                return;
+            }
+            
+            // Show loading state
+            refreshState.isRefreshing = true;
+            executeRefreshBtnEmp.innerHTML = '<div class="spinner"></div> Refreshing...';
+            executeRefreshBtnEmp.disabled = true;
+            
+            // Determine which refresh function to call
+            let refreshPromise;
+            if (refreshState.selectedOption === 'refreshBalances') {
+                refreshPromise = refreshBalancesEmp();
+            } else if (refreshState.selectedOption === 'refreshTransactions') {
+                refreshPromise = refreshTransactionsEmp();
+            } else {
+                refreshPromise = refreshAllDataEmp();
+            }
+            
+            // Execute the refresh
+            refreshPromise
+                .then(result => {
+                    // Update UI with new data
+                    updateDashboardDataEmp(result.dashboard);
+                    employeeCards = result.cards;
+                    renderEmployeeCards();
+                    
+                    // Update last refresh time
+                    refreshState.lastRefreshTime = new Date();
+                    updateLastRefreshTimeEmp();
+                    
+                    // Show success message
+                    showToast(`Refresh completed successfully! ${result.message}`, 'success');
+                })
+                .catch(error => {
+                    // Show error message
+                    showToast(`Refresh failed: ${error.message}`, 'error');
+                })
+                .finally(() => {
+                    // Reset loading state
+                    refreshState.isRefreshing = false;
+                    executeRefreshBtnEmp.innerHTML = '<i class="fas fa-sync"></i> Refresh Now';
+                    executeRefreshBtnEmp.disabled = false;
+                });
+        }
+
+        // Refresh balances only for admin
+        function refreshBalances() {
+            return new Promise((resolve, reject) => {
+                // Simulate API call delay
+                setTimeout(() => {
+                    try {
+                        // Simulate updated data
+                        const updatedCards = corporateCards.map(card => {
+                            // Generate random balance changes
+                            const balanceChange = Math.floor(Math.random() * 200) - 100;
+                            const newBalance = Math.max(0, card.balance + balanceChange);
+                            const newAvailable = card.limit - newBalance;
+                            
+                            return {
+                                ...card,
+                                balance: newBalance,
+                                available: newAvailable,
+                                lastUpdated: new Date().toISOString()
+                            };
+                        });
+                        
+                        // Update dashboard metrics
+                        const totalBalance = updatedCards.reduce((sum, card) => sum + card.balance, 0);
+                        const monthlySpendingChange = Math.floor(Math.random() * 1000) - 500;
+                        
+                        resolve({
+                            cards: updatedCards,
+                            dashboard: {
+                                monthlySpending: monthlySpendingChange
+                            },
+                            message: 'Balances updated successfully'
+                        });
+                    } catch (error) {
+                        reject(new Error('Failed to update balances'));
+                    }
+                }, 2000);
+            });
+        }
+
+        // Refresh balances only for employee
+        function refreshBalancesEmp() {
+            return new Promise((resolve, reject) => {
+                // Simulate API call delay
+                setTimeout(() => {
+                    try {
+                        // Simulate updated data
+                        const updatedCards = employeeCards.map(card => {
+                            // Generate random balance changes
+                            const balanceChange = Math.floor(Math.random() * 200) - 100;
+                            const newBalance = Math.max(0, card.balance + balanceChange);
+                            const newAvailable = card.limit - newBalance;
+                            
+                            return {
+                                ...card,
+                                balance: newBalance,
+                                available: newAvailable,
+                                lastUpdated: new Date().toISOString()
+                            };
+                        });
+                        
+                        // Update dashboard metrics
+                        const monthlySpendingChange = Math.floor(Math.random() * 200) - 100;
+                        
+                        resolve({
+                            cards: updatedCards,
+                            dashboard: {
+                                monthlySpending: monthlySpendingChange
+                            },
+                            message: 'Balances updated successfully'
+                        });
+                    } catch (error) {
+                        reject(new Error('Failed to update balances'));
+                    }
+                }, 2000);
+            });
+        }
+
+        // Refresh transactions only for admin
+        function refreshTransactions() {
+            return new Promise((resolve, reject) => {
+                // Simulate API call delay
+                setTimeout(() => {
+                    try {
+                        // In a real app, this would fetch new transactions
+                        // For demo, we'll just update the lastUpdated timestamp
+                        const updatedCards = corporateCards.map(card => ({
+                            ...card,
+                            lastUpdated: new Date().toISOString()
+                        }));
+                        
+                        // Simulate changes in pending approvals
+                        const approvalChange = Math.floor(Math.random() * 5) - 2;
+                        
+                        resolve({
+                            cards: updatedCards,
+                            dashboard: {
+                                pendingApprovals: approvalChange
+                            },
+                            message: 'Transactions updated successfully'
+                        });
+                    } catch (error) {
+                        reject(new Error('Failed to update transactions'));
+                    }
+                }, 1500);
+            });
+        }
+
+        // Refresh transactions only for employee
+        function refreshTransactionsEmp() {
+            return new Promise((resolve, reject) => {
+                // Simulate API call delay
+                setTimeout(() => {
+                    try {
+                        // In a real app, this would fetch new transactions
+                        // For demo, we'll just update the lastUpdated timestamp
+                        const updatedCards = employeeCards.map(card => ({
+                            ...card,
+                            lastUpdated: new Date().toISOString()
+                        }));
+                        
+                        // Simulate changes in pending approvals
+                        const approvalChange = Math.floor(Math.random() * 3) - 1;
+                        
+                        resolve({
+                            cards: updatedCards,
+                            dashboard: {
+                                pendingApprovals: approvalChange
+                            },
+                            message: 'Transactions updated successfully'
+                        });
+                    } catch (error) {
+                        reject(new Error('Failed to update transactions'));
+                    }
+                }, 1500);
+            });
+        }
+
+        // Refresh all data for admin
+        function refreshAllData() {
+            return new Promise((resolve, reject) => {
+                // Simulate API call delay
+                setTimeout(() => {
+                    try {
+                        // Simulate comprehensive data update
+                        const updatedCards = corporateCards.map(card => {
+                            // Generate random changes for all fields
+                            const balanceChange = Math.floor(Math.random() * 300) - 150;
+                            const newBalance = Math.max(0, card.balance + balanceChange);
+                            const newAvailable = card.limit - newBalance;
+                            
+                            // Occasionally simulate a limit change
+                            const limitChange = Math.random() > 0.8 ? Math.floor(Math.random() * 1000) : 0;
+                            const newLimit = card.limit + limitChange;
+                            
+                            return {
+                                ...card,
+                                balance: newBalance,
+                                available: newAvailable,
+                                limit: newLimit,
+                                lastUpdated: new Date().toISOString()
+                            };
+                        });
+                        
+                        // Update multiple dashboard metrics
+                        const totalBalance = updatedCards.reduce((sum, card) => sum + card.balance, 0);
+                        const monthlySpendingChange = Math.floor(Math.random() * 1000) - 500;
+                        const approvalChange = Math.floor(Math.random() * 5) - 2;
+                        const violationChange = Math.random() > 0.7 ? 1 : 0;
+                        
+                        resolve({
+                            cards: updatedCards,
+                            dashboard: {
+                                monthlySpending: monthlySpendingChange,
+                                pendingApprovals: approvalChange,
+                                policyViolations: violationChange
+                            },
+                            message: 'All card data refreshed successfully'
+                        });
+                    } catch (error) {
+                        reject(new Error('Failed to refresh all data'));
+                    }
+                }, 3000);
+            });
+        }
+
+        // Refresh all data for employee
+        function refreshAllDataEmp() {
+            return new Promise((resolve, reject) => {
+                // Simulate API call delay
+                setTimeout(() => {
+                    try {
+                        // Simulate comprehensive data update
+                        const updatedCards = employeeCards.map(card => {
+                            // Generate random changes for all fields
+                            const balanceChange = Math.floor(Math.random() * 200) - 100;
+                            const newBalance = Math.max(0, card.balance + balanceChange);
+                            const newAvailable = card.limit - newBalance;
+                            
+                            return {
+                                ...card,
+                                balance: newBalance,
+                                available: newAvailable,
+                                lastUpdated: new Date().toISOString()
+                            };
+                        });
+                        
+                        // Update multiple dashboard metrics
+                        const monthlySpendingChange = Math.floor(Math.random() * 300) - 150;
+                        const approvalChange = Math.floor(Math.random() * 3) - 1;
+                        
+                        resolve({
+                            cards: updatedCards,
+                            dashboard: {
+                                monthlySpending: monthlySpendingChange,
+                                pendingApprovals: approvalChange
+                            },
+                            message: 'All card data refreshed successfully'
+                        });
+                    } catch (error) {
+                        reject(new Error('Failed to refresh all data'));
+                    }
+                }, 3000);
+            });
+        }
+
+        // Update dashboard data for admin
+        function updateDashboardData(updates) {
+            if (updates.monthlySpending !== undefined) {
+                const monthlySpendingElement = document.getElementById('monthlySpending');
+                const currentValue = parseInt(monthlySpendingElement.textContent.replace(/[^0-9]/g, ''));
+                const newValue = Math.max(0, currentValue + updates.monthlySpending);
+                monthlySpendingElement.textContent = `$${newValue.toLocaleString()}`;
+                
+                // Update change indicator
+                const changeElement = monthlySpendingElement.parentElement.querySelector('.card-change');
+                if (updates.monthlySpending >= 0) {
+                    changeElement.innerHTML = '<i class="fas fa-arrow-up"></i> Increased from last refresh';
+                    changeElement.className = 'card-change positive';
+                } else {
+                    changeElement.innerHTML = '<i class="fas fa-arrow-down"></i> Decreased from last refresh';
+                    changeElement.className = 'card-change negative';
+                }
+            }
+            
+            if (updates.pendingApprovals !== undefined) {
+                const pendingApprovalsElement = document.getElementById('pendingApprovals');
+                const currentValue = parseInt(pendingApprovalsElement.textContent);
+                const newValue = Math.max(0, currentValue + updates.pendingApprovals);
+                pendingApprovalsElement.textContent = newValue;
+            }
+            
+            if (updates.policyViolations !== undefined) {
+                const policyViolationsElement = document.getElementById('policyViolations');
+                const currentValue = parseInt(policyViolationsElement.textContent);
+                const newValue = Math.max(0, currentValue + updates.policyViolations);
+                policyViolationsElement.textContent = newValue;
+            }
+        }
+
+        // Update dashboard data for employee
+        function updateDashboardDataEmp(updates) {
+            if (updates.monthlySpending !== undefined) {
+                const monthlySpendingElement = document.getElementById('myMonthlySpending');
+                const currentValue = parseInt(monthlySpendingElement.textContent.replace(/[^0-9]/g, ''));
+                const newValue = Math.max(0, currentValue + updates.monthlySpending);
+                monthlySpendingElement.textContent = `$${newValue.toLocaleString()}`;
+                
+                // Update change indicator
+                const changeElement = monthlySpendingElement.parentElement.querySelector('.card-change');
+                if (updates.monthlySpending >= 0) {
+                    changeElement.innerHTML = '<i class="fas fa-arrow-up"></i> Increased from last refresh';
+                    changeElement.className = 'card-change positive';
+                } else {
+                    changeElement.innerHTML = '<i class="fas fa-arrow-down"></i> Decreased from last refresh';
+                    changeElement.className = 'card-change negative';
+                }
+            }
+            
+            if (updates.pendingApprovals !== undefined) {
+                const pendingApprovalsElement = document.getElementById('myPendingExpenses');
+                const currentValue = parseInt(pendingApprovalsElement.textContent);
+                const newValue = Math.max(0, currentValue + updates.pendingApprovals);
+                pendingApprovalsElement.textContent = newValue;
+            }
+        }
+
+        // Update last refresh time display for admin
+        function updateLastRefreshTime() {
+            if (refreshState.lastRefreshTime) {
+                const formattedTime = refreshState.lastRefreshTime.toLocaleString();
+                lastRefreshTimeElement.textContent = `Last refreshed: ${formattedTime}`;
+            } else {
+                lastRefreshTimeElement.textContent = 'Last refreshed: Never';
+            }
+        }
+
+        // Update last refresh time display for employee
+        function updateLastRefreshTimeEmp() {
+            if (refreshState.lastRefreshTime) {
+                const formattedTime = refreshState.lastRefreshTime.toLocaleString();
+                lastRefreshTimeElementEmp.textContent = `Last refreshed: ${formattedTime}`;
+            } else {
+                lastRefreshTimeElementEmp.textContent = 'Last refreshed: Never';
+            }
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            toast.textContent = message;
+            toast.className = 'toast';
+            
+            if (type === 'error') {
+                toast.classList.add('error');
+            } else if (type === 'warning') {
+                toast.classList.add('warning');
+            }
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // Initialize with refreshAll selected
+        selectRefreshOption('refreshAll');
+        selectRefreshOptionEmp('refreshAll');
+
+        // Auth functions
+        function handleSignup() {
+            const email = document.getElementById('email').value;
+            const country = document.getElementById('country').value;
+            
+            if (!email || !country) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Simple role assignment based on email
+            let role = 'employee';
+            if (email.includes('admin')) {
+                role = 'admin';
+            } else if (email.includes('manager')) {
+                role = 'manager';
+            }
+            
+            // Show appropriate dashboard
+            document.getElementById('auth-section').classList.remove('active');
+            
+            if (role === 'admin') {
+                document.getElementById('admin-dashboard').classList.add('active');
+            } else if (role === 'manager') {
+                document.getElementById('manager-dashboard').classList.add('active');
+            } else {
+                document.getElementById('employee-dashboard').classList.add('active');
+            }
+            
+            showToast(`Welcome! You're logged in as ${role}`, 'success');
+        }
+
+        function logout() {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('auth-section').classList.add('active');
+            showToast('You have been logged out', 'success');
+        }
+    </script>
+</body>
+</html>
