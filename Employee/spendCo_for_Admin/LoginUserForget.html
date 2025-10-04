@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Change Password</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+
+    .card h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 18px;
+      width: 300px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 5px rgba(79,70,229,0.3);
+    }
+
+    .eye-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: gray;
+      margin-top: 10px;
+      margin-left: 40px;
+       
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #4f46e5;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .success { color: green; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Change Password</h2>
+    <form id="passwordForm">
+      <div class="input-group">
+        <label for="oldPassword">Old Password</label>
+        <input type="password" id="oldPassword" required>
+        <i class="fa-solid fa-eye eye-icon" onclick="togglePassword('oldPassword', this)"></i>
+      </div>
+
+      <div class="input-group">
+        <label for="newPassword">New Password</label>
+        <input type="password" id="newPassword" required>
+        <i class="fa-solid fa-eye eye-icon" onclick="togglePassword('newPassword', this)"></i>
+      </div>
+
+      <div class="input-group">
+        <label for="confirmPassword">Confirm New Password</label>
+        <input type="password" id="confirmPassword" required>
+        <i     class="fa-solid fa-eye eye-icon" onclick="togglePassword('confirmPassword', this)"></i>
+      </div>
+
+      <button type="submit">Update Password</button>
+      <a style="text-decoration: none;  font-size: 13px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; margin-top: 20px;"  href="./loginUser.html">Go back to home page</a>
+      <div id="status" class="status"></div>
+    </form>
+  </div>
+
+<script>
+  function togglePassword(fieldId, icon) {
+    const input = document.getElementById(fieldId);
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.remove("fa-eye");
+      icon.classList.add("fa-eye-slash");
+    } else {
+      input.type = "password";
+      icon.classList.remove("fa-eye-slash");
+      icon.classList.add("fa-eye");
+    }
+  }
+
+  document.getElementById("passwordForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const oldPass = document.getElementById("oldPassword").value;
+    const newPass = document.getElementById("newPassword").value;
+    const confirmPass = document.getElementById("confirmPassword").value;
+    const status = document.getElementById("status");
+
+    if (newPass.length < 6) {
+      status.textContent = "New password must be at least 6 characters.";
+      status.className = "status error";
+      return;
+    }
+
+    if (newPass !== confirmPass) {
+      status.textContent = "New password and confirm password do not match.";
+      status.className = "status error";
+      return;
+    }
+
+    // Simulate update success
+    status.textContent = "✅ Password updated successfully!";
+    status.className = "status success";
+  });
+</script>
+
+</body>
+</html>

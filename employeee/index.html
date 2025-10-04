@@ -1,20 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Dashboard - ExpenseFlow</title>
+    <title>Employee Dashboard - </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
     <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">
+                <!-- <div class="logo">
                     <i class="fas fa-receipt"></i>
                     <span>ExpenseFlow</span>
+                </div> -->
+                <div style="display: flex;">
+                    <div class="logo-icon">
+                        <i style="color: aliceblue; margin-left: 10px;margin-right: 10px;"
+                            class="fa-solid fa-dollar-sign"></i>
+
+                    </div>
+                    <div
+                        style="margin-top: 20px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 23px;">
+                        $pend<span
+                            style="color:rgb(24, 125, 184); font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                            co </span>
+                    </div>
                 </div>
                 <nav>
                     <ul>
@@ -41,7 +57,7 @@
             <!-- Dashboard Tab -->
             <div id="dashboard" class="tab-content active">
                 <h1 class="section-title">Employee Dashboard</h1>
-                
+
                 <div class="dashboard">
                     <div class="card">
                         <div class="card-header">
@@ -53,7 +69,7 @@
                         <div class="card-value" id="pendingCount">5</div>
                         <p class="card-text">Your expenses waiting for approval</p>
                     </div>
-                    
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Total Submitted</h3>
@@ -64,7 +80,7 @@
                         <div class="card-value">$1,250.75</div>
                         <p class="card-text">Your expense claims this month</p>
                     </div>
-                    
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Approved</h3>
@@ -75,7 +91,7 @@
                         <div class="card-value">$980.50</div>
                         <p class="card-text">Approved expenses this month</p>
                     </div>
-                    
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Reimbursed</h3>
@@ -87,7 +103,7 @@
                         <p class="card-text">Amount reimbursed to you</p>
                     </div>
                 </div>
-                
+
                 <div class="section-title">Recent Expenses</div>
                 <div class="table-container">
                     <table>
@@ -107,7 +123,7 @@
                     </table>
                 </div>
             </div>
-            
+
             <!-- My Expenses Tab -->
             <div id="expenses" class="tab-content">
                 <div class="section-header">
@@ -116,7 +132,7 @@
                         <i class="fas fa-plus"></i> Add New Expense
                     </button>
                 </div>
-                
+
                 <div class="table-container">
                     <table>
                         <thead>
@@ -136,11 +152,11 @@
                     </table>
                 </div>
             </div>
-            
+
             <!-- Submit Expense Tab -->
             <div id="submit-expense" class="tab-content">
                 <h1 class="section-title">Submit New Expense</h1>
-                
+
                 <div class="form-container">
                     <div class="form-group">
                         <label for="expenseDate">Date</label>
@@ -161,7 +177,8 @@
                     </div>
                     <div class="form-group">
                         <label for="expenseDescription">Description</label>
-                        <textarea id="expenseDescription" class="form-control" rows="3" placeholder="Enter expense description"></textarea>
+                        <textarea id="expenseDescription" class="form-control" rows="3"
+                            placeholder="Enter expense description"></textarea>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
@@ -187,19 +204,19 @@
                             <small>Upload a receipt image for OCR processing (JPEG, PNG, PDF)</small>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <button class="btn btn-primary" id="scanReceiptBtn">
                             <i class="fas fa-camera"></i> Scan Receipt with OCR
                         </button>
                     </div>
-                    
+
                     <div class="ocr-processing" id="ocrProcessing">
                         <i class="fas fa-spinner fa-spin"></i>
                         <h3>Processing Receipt</h3>
                         <p>Extracting information from your receipt...</p>
                     </div>
-                    
+
                     <div class="receipt-preview" id="receiptPreview">
                         <h3>Receipt Preview</h3>
                         <img id="receiptImage" src="" alt="Receipt">
@@ -210,7 +227,7 @@
                             <p><strong>Category:</strong> <span id="receiptCategory">Meals</span></p>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <button class="btn btn-primary" id="submitExpenseBtn" style="width: 100%;">
                             <i class="fas fa-paper-plane"></i> Submit Expense
@@ -256,7 +273,8 @@
                 <div class="form-group">
                     <label>Receipt</label>
                     <div class="receipt-preview">
-                        <img id="modalReceipt" src="https://via.placeholder.com/300x150?text=Flight+Receipt" alt="Receipt">
+                        <img id="modalReceipt" src="https://via.placeholder.com/300x150?text=Flight+Receipt"
+                            alt="Receipt">
                     </div>
                 </div>
             </div>
@@ -274,4 +292,5 @@
     </footer>
     <script src="./index.js"></script>
 </body>
+
 </html>

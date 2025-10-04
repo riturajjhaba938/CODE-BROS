@@ -1,26 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - ExpenseFlow</title>
+    <title>Admin Dashboard - Spend Co</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
 </head>
+
 <body>
     <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">
+                <!-- <div class="logo">
                     <i class="fas fa-receipt"></i>
                     <span>ExpenseFlow</span>
+                </div> -->
+                <div style="display: flex;">
+                    <div class="logo-icon">
+                        <i style="color: aliceblue; margin-left: 10px;margin-right: 10px;"
+                            class="fa-solid fa-dollar-sign"></i>
+
+                    </div>
+                    <div
+                        style="margin-top: 20px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 23px;">
+                        $pend<span
+                            style="color:rgb(24, 125, 184); font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                            co </span>
+                    </div>
                 </div>
+
                 <nav>
                     <ul>
                         <li><a href="#" class="active" data-tab="dashboard">Dashboard</a></li>
                         <li><a href="#" data-tab="approvals">Pending Approvals</a></li>
                         <li><a href="#" data-tab="all-expenses">All Expenses</a></li>
+                             <li><a href="./corporatecard.html" data-tab="corporatecard">Corporate card</a></li>
                         <li><a href="#" data-tab="settings">Settings</a></li>
                     </ul>
                 </nav>
@@ -29,7 +48,7 @@
                         <span>John Doe (Admin)</span>
                     </div>
                     <button class="btn btn-outline" id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i> <a href="./loginUser.html" style="color: rgb(47, 69, 107); text-decoration: none;">Logout</a>
                     </button>
                 </div>
             </div>
@@ -42,7 +61,7 @@
             <!-- Dashboard Tab -->
             <div id="dashboard" class="tab-content active">
                 <h1 class="section-title">Admin Dashboard</h1>
-                
+
                 <div class="dashboard">
                     <div class="card">
                         <div class="card-header">
@@ -54,7 +73,7 @@
                         <div class="card-value" id="adminPendingCount">8</div>
                         <p class="card-text">Expenses waiting for approval</p>
                     </div>
-                    
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Total Submitted</h3>
@@ -65,7 +84,7 @@
                         <div class="card-value">$4,250.75</div>
                         <p class="card-text">All expense claims this month</p>
                     </div>
-                    
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Approved</h3>
@@ -76,7 +95,7 @@
                         <div class="card-value">$3,120.50</div>
                         <p class="card-text">Approved expenses this month</p>
                     </div>
-                    
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Rejected</h3>
@@ -88,7 +107,7 @@
                         <p class="card-text">Rejected expenses this month</p>
                     </div>
                 </div>
-                
+
                 <div class="section-title">Recent Expenses</div>
                 <div class="table-container">
                     <table>
@@ -108,11 +127,11 @@
                     </table>
                 </div>
             </div>
-            
+
             <!-- Pending Approvals Tab -->
             <div id="approvals" class="tab-content">
                 <h1 class="section-title">Pending Approvals</h1>
-                
+
                 <div class="table-container">
                     <table>
                         <thead>
@@ -132,11 +151,11 @@
                     </table>
                 </div>
             </div>
-            
+
             <!-- All Expenses Tab -->
             <div id="all-expenses" class="tab-content">
                 <h1 class="section-title">All Expenses</h1>
-                
+
                 <div class="table-container">
                     <table>
                         <thead>
@@ -161,13 +180,13 @@
             <!-- Settings Tab -->
             <div id="settings" class="tab-content">
                 <h1 class="section-title">Approval Settings</h1>
-                
+
                 <div class="tabs">
                     <div class="tab active" data-settings-tab="workflow">Approval Workflow</div>
                     <div class="tab" data-settings-tab="rules">Approval Rules</div>
                     <div class="tab" data-settings-tab="company">Company Settings</div>
                 </div>
-                
+
                 <div id="workflow" class="settings-tab-content active">
                     <div class="card">
                         <div class="card-header">
@@ -213,7 +232,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="rules" class="settings-tab-content">
                     <div class="card">
                         <div class="card-header">
@@ -256,7 +275,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="company" class="settings-tab-content">
                     <div class="card">
                         <div class="card-header">
@@ -333,7 +352,8 @@
                 <div class="form-group">
                     <label>Receipt</label>
                     <div class="receipt-preview">
-                        <img id="modalReceipt" src="https://via.placeholder.com/300x150?text=Flight+Receipt" alt="Receipt">
+                        <img id="modalReceipt" src="https://via.placeholder.com/300x150?text=Flight+Receipt"
+                            alt="Receipt">
                     </div>
                 </div>
             </div>
@@ -352,4 +372,5 @@
     <script src="./index.js"></script>
 
 </body>
+
 </html>
